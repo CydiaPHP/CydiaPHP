@@ -4,12 +4,12 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
-	// include 'apt.class.php';
+	include 'apt.class.php';
 	// use Mishak\ArchiveTar\Reader;
-	use \wapmorgan\UnifiedArchive\UnifiedArchive;
-	require 'vendor/autoload.php';
+	// use \wapmorgan\UnifiedArchive\UnifiedArchive;
+	// require 'vendor/autoload.php';
 
-	// $APT = new APT();
+	$APT = new APT();
 
 	// var_dump($APT->reloadData());
 
@@ -19,22 +19,22 @@
 
 	// $archive->extract('repos/BigBoss/');
 
-	$filename = 'repos/Cydia_Telesphoreo/Packages.bz2';
-	$archive = UnifiedArchive::open($filename);
-	// var_dump($archive->getFileNames());
-	// echo "<br>";
-	// var_dump($archive->getFileData('Packages'));
-	$archive->extractFiles('repos/Cydia_Telesphoreo/');
+	// $filename = 'repos/Cydia_Telesphoreo/Packages.bz2';
+	// $archive = UnifiedArchive::open($filename);
+	// // var_dump($archive->getFileNames());
+	// // echo "<br>";
+	// // var_dump($archive->getFileData('Packages'));
+	// $archive->extractFiles('repos/Cydia_Telesphoreo/');
 
-	copy('repos/Cydia_Telesphoreo/Packages', 'repos/Cydia_Telesphoreo/Packages2.bz2');
-	$filename = 'repos/Cydia_Telesphoreo/Packages2.bz2';
-	$archive = UnifiedArchive::open($filename);
-	// var_dump($archive->getFileNames());
-	// echo "<br>";
-	// var_dump($archive->getFileData('Packages'));
-	$archive->extractFiles('repos/Cydia_Telesphoreo/');
+	// copy('repos/Cydia_Telesphoreo/Packages', 'repos/Cydia_Telesphoreo/Packages2.bz2');
+	// $filename = 'repos/Cydia_Telesphoreo/Packages2.bz2';
+	// $archive = UnifiedArchive::open($filename);
+	// // var_dump($archive->getFileNames());
+	// // echo "<br>";
+	// // var_dump($archive->getFileData('Packages'));
+	// $archive->extractFiles('repos/Cydia_Telesphoreo/');
 ?>
-
+<pre><?php print_r($APT->loadRepos()); ?></pre>
 <?php
 
 // $ch = curl_init();

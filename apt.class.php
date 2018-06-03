@@ -229,6 +229,8 @@
                 $icon = $this->downloadFile($iconURL, "Cydia");
                 $filename = $this->URLToFilename($repo);
                 file_put_contents("repos/$filename.png", $icon);
+
+                return "repos/$filename.png";
             }
 		}
 
@@ -256,6 +258,24 @@
             } else {
             	return "Failed to fetch Release";
             }
+		}
+
+		public function loadRepos() {
+			$allRepos = explode("\n", file_get_contents("cydia.repos"));
+			$repos = array();
+			foreach ($allRepos as $repo_key => $repo) {
+				$repoInfo = explode(" : ", $repo);
+				// print_r($repoInfo);
+				$repoInfo = [
+					"name" => $repoInfo[1],
+					"url" => $repoInfo[0],
+					"icon" => $repoInfo[2],
+					"package_count" => $repoInfo[3]
+				];
+
+				$repos[$repoInfo['name']] = $repoInfo;
+			}
+			return $repos;
 		}
 
 		public function reloadData() {
@@ -340,7 +360,9 @@
                 		return "Line 305";
                 	}
 
-                	$allRepos[$repo_key] = $repoInfo['url']." : ".$repoInfo['name']." : ".$packagesCount;
+                	$icon = $this->downloadIcon($repoInfo['url']);
+
+                	$allRepos[$repo_key] = $repoInfo['url']." : ".$repoInfo['name']." : ". $icon ." : ".$packagesCount;
 
                 	file_put_contents("cydia.repos", implode("\n", $allRepos));
                 } else {
