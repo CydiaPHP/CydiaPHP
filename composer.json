@@ -1,5 +1,5 @@
 {
     "require": {
-        "alchemy/zippy": "^0.4.9"
+        "wapmorgan/unified-archive": "~0.1.0"
     }
 }

@@ -1,13 +1,17 @@
 <?php 
 
-	use Alchemy\Zippy\Zippy;
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+	
+	use \wapmorgan\UnifiedArchive\UnifiedArchive;
 	require 'vendor/autoload.php';
 
 	/**
 	 * APT Repository Viewer
 	 */
 
-	$oldLayout = [
+	$GLOBALS['oldLayout'] = [
 		"http://apt.thebigboss.org/repofiles/cydia/",
 		"http://apt.modmyi.com/",
 		"http://cydia.zodttd.com/repo/cydia/",
@@ -15,6 +19,13 @@
 	];
 
 	class APT {
+
+		protected $glob;
+
+	    public function __construct() {
+	        global $GLOBALS;
+	        $this->glob =& $GLOBALS;
+	    }
 
 		private function downloadFile($url, $module) {
 		    if ($module == "Telesphoreo") {
@@ -94,80 +105,111 @@
 		}
 
 		private function repoExistance($repo, $module) {
-			if ($module == "Telesphoreo") {
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $repo);
-				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, [
-				  "Accept: */*",
-				  "Accept-Language: en-us",
-				  "Accept-Encoding: gzip, deflate",
-				  "User-Agent: Telesphoreo APT-HTTP/1.0.592",
-				  "X-Machine: iPhone10,6",
-				  "X-Firmware: 11.1.2",
-				  "X-Unique-ID: 10aded70015040b4d455c1a551c411cec01ddeb5"
-				]);
+			echo $repo;
+			echo "<br>";
+			// if ($module == "Telesphoreo") {
+			// 	$ch = curl_init();
+			// 	curl_setopt($ch, CURLOPT_URL, $repo);
+			// 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
+			// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			// 	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			// 	  "Accept: */*",
+			// 	  "Accept-Language: en-us",
+			// 	  "Accept-Encoding: gzip, deflate",
+			// 	  "User-Agent: Telesphoreo APT-HTTP/1.0.592",
+			// 	  "X-Machine: iPhone10,6",
+			// 	  "X-Firmware: 11.1.2",
+			// 	  "X-Unique-ID: 10aded70015040b4d455c1a551c411cec01ddeb5"
+			// 	]);
 
-				$response = curl_exec($ch);
+			// 	$response = curl_exec($ch);
 
-				$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// 	$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-				curl_close($ch);
+			// 	echo curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-				if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
-					return true;
-				} else {
-					return false;
-				}
-			} elseif ($module == "Cydia") {
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $repo);
-				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, [
-				  "Accept: */*",
-				  "Accept-Language: en-us",
-				  "Accept-Encoding: gzip, deflate",
-				  "User-Agent: Cydia/0.9 CFNetwork/548.1.4 Darwin/11.0.0",
-				  "X-Machine: iPhone10,6",
-				  "X-Firmware: 11.1.2",
-				  "X-Unique-ID: 10aded70015040b4d455c1a551c411cec01ddeb5"
-				]);
+			// 	curl_close($ch);
 
-				$response = curl_exec($ch);
+			// 	if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
+			// 		return true;
+			// 	} else {
+			// 		return false;
+			// 	}
+			// } elseif ($module == "Cydia") {
+			// 	$ch = curl_init();
+			// 	curl_setopt($ch, CURLOPT_URL, $repo);
+			// 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
+			// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			// 	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			// 	  "Accept: */*",
+			// 	  "Accept-Language: en-us",
+			// 	  "Accept-Encoding: gzip, deflate",
+			// 	  "User-Agent: Cydia/0.9 CFNetwork/548.1.4 Darwin/11.0.0",
+			// 	  "X-Machine: iPhone10,6",
+			// 	  "X-Firmware: 11.1.2",
+			// 	  "X-Unique-ID: 10aded70015040b4d455c1a551c411cec01ddeb5"
+			// 	]);
 
-				$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// 	$response = curl_exec($ch);
 
-				curl_close($ch);
+			// 	$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-				if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
-					return true;
-				} else {
-					return false;
-				}
+			// 	curl_close($ch);
+
+			// 	if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
+			// 		return true;
+			// 	} else {
+			// 		return false;
+			// 	}
+			// } else {
+			// 	$ch = curl_init();
+			// 	curl_setopt($ch, CURLOPT_URL, $repo);
+			// 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
+			// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			// 	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			// 	  "Accept: */*",
+			// 	  "Accept-Language: en-us",
+			// 	  "Accept-Encoding: gzip, deflate"
+			// 	]);
+
+			// 	$response = curl_exec($ch);
+
+			// 	$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+			// 	curl_close($ch);
+
+			// 	if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
+			// 		return true;
+			// 	} else {
+			// 		return false;
+			// 	}
+			// }
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $repo);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			  "Accept: */*",
+			  "Accept-Language: en-us",
+			  "Accept-Encoding: gzip, deflate",
+			  "User-Agent: Telesphoreo APT-HTTP/1.0.592",
+			  "X-Machine: iPhone10,6",
+			  "X-Firmware: 11.1.2",
+			  "X-Unique-ID: 10aded70015040b4d455c1a551c411cec01ddeb5"
+			]);
+
+			$response = curl_exec($ch);
+
+			$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+			echo curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+			curl_close($ch);
+
+			if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
+				return true;
 			} else {
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $repo);
-				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, [
-				  "Accept: */*",
-				  "Accept-Language: en-us",
-				  "Accept-Encoding: gzip, deflate"
-				]);
-
-				$response = curl_exec($ch);
-
-				$HTTPStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-				curl_close($ch);
-
-				if ($HTTPStatusCode == 200 || $HTTPStatusCode == 302) {
-					return true;
-				} else {
-					return false;
-				}
+				return false;
 			}
 		}
 
@@ -177,7 +219,7 @@
 
 			if ($repo == "http://apt.saurik.com/") {
                 $iconURL = $repo."dists/ios/CydiaIcon.png";
-			} elseif (in_array($repo, $oldLayout)) {
+			} elseif (in_array($repo, $this->glob['oldLayout'])) {
                 $iconURL = $repo."dists/stable/CydiaIcon.png";
 			} else {
                 $iconURL = $repo."CydiaIcon.png";
@@ -197,7 +239,7 @@
 
 			if ($repo == "http://apt.saurik.com/") {
                 $releaseURL = $repo."dists/ios/Release";
-			} elseif (in_array($repo, $oldLayout)) {
+			} elseif (in_array($repo, $this->glob['oldLayout'])) {
                 $releaseURL = $repo."dists/stable/Release";
 			} else {
                 $releaseURL = $repo."Release";
@@ -224,15 +266,18 @@
 				$packagesURL = "";
 				$isBZ2Archive = true;
 
-				$repoInfo = explode(":", $repo);
+				$repoInfo = explode(" : ", $repo);
+				print_r($repoInfo);
 				$repoInfo = [
-					"name" => $repo[1],
-					"url" => $repo[0]
+					"name" => $repoInfo[1],
+					"url" => $repoInfo[0]
 				];
+				echo "<br>";
+				print_r($repoInfo);
 
 				if ($repoInfo['url'] == "http://apt.saurik.com/") {
                     $packagesURL = $repoInfo['url']."dists/ios/main/binary-iphoneos-arm/Packages.bz2";
-				} elseif (in_array($repoInfo['url'], $oldLayout)) {
+				} elseif (in_array($repoInfo['url'], $this->glob['oldLayout'])) {
 					$packagesURL = $repoInfo['url']."dists/stable/main/binary-iphoneos-arm/Packages.bz2";
                 } else {
                     $packagesURL = $repoInfo['url']."Packages.bz2";
@@ -243,40 +288,41 @@
                 }
 
                 if (!$this->repoExistance($packagesURL, "Telesphoreo")) {
-                	return false;
+                	return "Line 256";
                 }
 
-                $filename = $this->URLToFilename($repoInfo['url']).".Packages".($isBZ2Archive ? ".bz2" : ".gz");
+                $filename = "Packages".($isBZ2Archive ? ".bz2" : ".gz");
+                echo $filename;
 
-                if (!file_exists('repos/'.$repoInfo['name'])) {
-                    mkdir('repos/'.$repoInfo['name'], 0777);
+                if (!file_exists('repos/'.str_replace("/", "_", $repoInfo['name']))) {
+                    mkdir('repos/'.str_replace("/", "_", $repoInfo['name']), 0777);
                 }
 
-                if (file_put_contents('repos/'.$repoInfo['name'].'/'.$filename, $this->downloadFile($packagesURL, "Telesphoreo"))) {
+                if (file_put_contents('repos/'.str_replace("/", "_", $repoInfo['name']).'/'.$filename, $this->downloadFile($packagesURL, "Telesphoreo"))) {
 
                 } else {
-                	return false;
+                	return "Line 269";
                 }
 
-                $zippy = Zippy::load();
+                $archive = UnifiedArchive::open('repos/'.str_replace("/", "_", $repoInfo['name']).'/'.$filename);
 
-                $archive = $zippy->open('repos/'.$repoInfo['name'].'/'.$filename);
+                // var_dump($archive->getFileNames());
 
-                $archive->extract('repos/'.$repoInfo['name'].'/'.$filename);
+                $archive->extractFiles('repos/'.str_replace("/", "_", $repoInfo['name']).'/');
 
-                if (file_exists('repos/'.$repoInfo['name'].'/Packages') || file_exists('repos/'.$repoInfo['name'].'/PACKAGES') || file_exists('repos/'.$repoInfo['name'].'/packages')) {
+                if (file_exists('repos/'.str_replace("/", "_", $repoInfo['name']).'/Packages') || file_exists('repos/'.str_replace("/", "_", $repoInfo['name']).'/PACKAGES') || file_exists('repos/'.str_replace("/", "_", str_replace("/", "_", $repoInfo['name'])).'/packages')) {
 
                 	$filePath = "";
 
-                	if (file_exists('repos/'.$repoInfo['name'].'/Packages')) {
-                		$filePath = 'repos/'.$repoInfo['name'].'/Packages';
-                	} elseif (file_exists('repos/'.$repoInfo['name'].'/PACKAGES')) {
-                		$filePath = 'repos/'.$repoInfo['name'].'/PACKAGES';
-                	} elseif (file_exists('repos/'.$repoInfo['name'].'/packages')) {
-                		$filePath = 'repos/'.$repoInfo['name'].'/packages';
+                	if (file_exists('repos/'.str_replace("/", "_", $repoInfo['name']).'/Packages')) {
+                		$filePath = 'repos/'.str_replace("/", "_", $repoInfo['name']).'/Packages';
+                	} elseif (file_exists('repos/'.str_replace("/", "_", $repoInfo['name']).'/PACKAGES')) {
+                		$filePath = 'repos/'.str_replace("/", "_", $repoInfo['name']).'/PACKAGES';
+                	} elseif (file_exists('repos/'.str_replace("/", "_", $repoInfo['name']).'/packages')) {
+                		$filePath = 'repos/'.str_replace("/", "_", $repoInfo['name']).'/packages';
                 	} else {
                 		// how the f*ck did you make it here when the you don't even exist LMFAO!
-                		return false;
+                		return "Line 290";
                 	}
 
                 	$packagesCount = 0;
@@ -291,57 +337,58 @@
                 	    }
                 	    fclose($handle);
                 	} else {
-                		return false;
+                		return "Line 305";
                 	}
 
-                	$allRepos[$repo_key] = $url.":".$name.":".$packagesCount;
+                	$allRepos[$repo_key] = $repoInfo['url']." : ".$repoInfo['name']." : ".$packagesCount;
 
                 	file_put_contents("cydia.repos", implode("\n", $allRepos));
                 } else {
-                	return false;
+                	return "Line 312";
                 }
 
-                unlink('repos/'.$repoInfo['name'].'/'.$filename);
+                unlink('repos/'.str_replace("/", "_", $repoInfo['name']).'/'.$filename);
 			}
 		}
-	}
 
-	private function parsePackages($packages) {
-		if (file_exists($packages)) {
-			
-		} else {
-			return false;
-		}
-
-		$packagesArray = array();
-
-		$handle = @fopen($packages, "r");
-		if ($handle) {
-		    while (($buffer = fgets($handle, 4096)) !== false) {
-		        // echo $buffer;
-		        array_push($packagesArray, explode("\n\n", $buffer));
-		    }
-		    fclose($handle);
-		} else {
-			return false;
-		}
-
-		foreach ($packagesArray as $package_key => $package) {
-			$packageInfoArray = explode("\n", $package);
-			$packageInformation = array();
-			foreach ($packageInfoArray as $package_key => $packageInfo) {
-				$packageInfo = explode(":", $packageInfo);
-				$variable = strtolower($packageInfo[0]);
-				$value = $packageInfo[1];
-				$packageInformation[$variable] = $value;
-			}
-			$packageName = $packageInformation['name'];
-			$pos = strpos($packageName, " ");
-			if ($pos !== false) {
-			    $packageName = substr_replace($packageName, "", $pos, strlen(" "));
+		private function parsePackages($packages) {
+			if (file_exists($packages)) {
+				
+			} else {
+				return false;
 			}
 
-			$packagesArray[$packageName] = $packageInformation;
+			$packagesArray = array();
+
+			$handle = @fopen($packages, "r");
+			if ($handle) {
+			    while (($buffer = fgets($handle, 4096)) !== false) {
+			        // echo $buffer;
+			        array_push($packagesArray, explode("\n\n", $buffer));
+			    }
+			    fclose($handle);
+			} else {
+				return false;
+			}
+
+			foreach ($packagesArray as $package_key => $package) {
+				$packageInfoArray = explode("\n", $package);
+				$packageInformation = array();
+				foreach ($packageInfoArray as $package_key => $packageInfo) {
+					$packageInfo = explode(":", $packageInfo);
+					$variable = strtolower($packageInfo[0]);
+					$value = $packageInfo[1];
+					$packageInformation[$variable] = $value;
+				}
+				$packageName = $packageInformation['name'];
+				$pos = strpos($packageName, " ");
+				if ($pos !== false) {
+				    $packageName = substr_replace($packageName, "", $pos, strlen(" "));
+				}
+
+				$packagesArray[$packageName] = $packageInformation;
+			}
+
 		}
 
 	}

@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
-    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    'fd419dbaef6da3b0a9513930c6ff3624' => $vendorDir . '/wapmorgan/unified-archive/src/function.gzip_stat.php',
+    '4c3913fa60911ad870b62c4baa0b9e9d' => $vendorDir . '/wapmorgan/unified-archive/src/stream.compress.lzw.php',
 );
