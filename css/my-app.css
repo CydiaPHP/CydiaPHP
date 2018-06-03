@@ -1,7 +1,48 @@
+.navbar, .toolbar {
+	background: white;
+	-webkit-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	border-radius: 13px;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.navbar:after, .toolbar:before {
+	display: none;
+}
+
+.content-block {
+	border-radius: 13px;
+}
+
+.content-block-inner {
+	background: white;
+	border-radius: 16px;
+	-webkit-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.content-block-inner:after, .content-block-inner:before, .list-block .item-inner:after  {
+    background-color: transparent;
+}
+
 .repo {
 	background: white;
-	-webkit-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.18);
-	-moz-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.18);
+	-webkit-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
 	box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.1);
 	border-radius: 16px;
 	margin-top: 25px;
