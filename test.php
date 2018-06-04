@@ -11,7 +11,7 @@
 
 	$APT = new APT();
 
-	// var_dump($APT->reloadData());
+	var_dump($APT->reloadData());
 
 	// $zippy = Zippy::load();
 
